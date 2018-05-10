@@ -1,15 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Function for finding the invers of a matrix
+# This is an example of caching a function to improve performance
+#example of lexical scoping 
 
-## Write a short comment describing this function
+## makeCacheMatrix function creates a cache of the matrix calc
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(x = numeric()) {
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function() x
+  setin <- function(mean) m <<- mean
+  getin <- function() m
+  list(set = set, get = get,
+       setin = setin,
+       getin = getin)
 }
 
 
-## Write a short comment describing this function
+## cacheSolve produces the result - the inverse matrix
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  m <- x$getin()
+  if(!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setin(m)
+  m
 }
